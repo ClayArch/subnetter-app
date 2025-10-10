@@ -1,9 +1,4 @@
-# File: subnetter_app.py
-"""
-Subnetter App (Streamlit)
-Run:    pip install streamlit
-        streamlit run subnetter_app.py
-"""
+# Subnetter Application
 
 from __future__ import annotations
 
@@ -15,7 +10,7 @@ from typing import Optional, Tuple
 import streamlit as st
 
 
-# ---------------------------- Core logic (your v6) ----------------------------
+# ---------------------------- Core logic () ----------------------------
 
 @dataclass(frozen=True)
 class SubnetInfo:

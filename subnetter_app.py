@@ -148,4 +148,3 @@ if submitted:
         st.error(str(e))
 
 st.divider()
-st.caption("Tip: share this file; classmates run `pip install streamlit` then `streamlit run subnetter_app.py`.")

@@ -91,7 +91,12 @@ with tab1:
                     list(data_dict.items()),
                     columns=["Field", "Value"]
                 )
-                st.dataframe(results_df, use_container_width=True, hide_index=True)
+                st.dataframe(
+                results_df, 
+                use_container_width=True, 
+                hide_index=True,
+                height=423
+                )
                 
                 # Download CSV
                 csv = io.StringIO()

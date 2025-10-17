@@ -14,11 +14,11 @@ from subnetter.core.calculator import parse_ip_and_mask, compute_subnet
 
 st.set_page_config(page_title="Subnetter", page_icon="🌐", layout="centered")
 st.title("Subnetter")
-st.caption("IPv4 subnet calculator — shareable, simple, accurate.")
+st.caption("IPv4 Subnet Calculator")
 
 # Inputs
 with st.form("input_form", clear_on_submit=False):
-    ip_in = st.text_input("IP (or IP/CIDR)", placeholder="192.168.1.10 or 192.168.1.10/24", value="")
+    ip_in = st.text_input("IP Address (or IP/CIDR)", placeholder="192.168.1.10 or 192.168.1.10/24", value="")
     show_mask = "/" not in ip_in if ip_in else True
     mask_in = None
     if show_mask:

@@ -15,7 +15,7 @@ st.set_page_config(page_title="Subnetter", page_icon="🌐", layout="wide")
 
 # Header
 st.title("🌐 Subnetter")
-st.caption("IPv4 subnet calculator — fast, accurate, shareable")
+st.caption("IPv4 Subnet Calculator")
 
 # Tabs for organization
 tab1, tab2 = st.tabs(["Calculator", "Reference"])

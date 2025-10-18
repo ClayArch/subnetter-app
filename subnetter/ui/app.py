@@ -66,7 +66,7 @@ with tab1:
                     st.metric("Wildcard Mask", info.wildcard)
                 
                 with result_col2:
-                    st.subheader("Host Range")
+                    st.subheader("Host Info")
                     st.metric("First Host", info.first_host)
                     st.metric("Last Host", info.last_host)
                     st.metric("Total Addresses", info.total_hosts)
@@ -126,6 +126,7 @@ with tab2:
         "/26": "255.255.255.192",
         "/27": "255.255.255.224",
         "/28": "255.255.255.240",
+        "/29": "255.255.255.248",
         "/30": "255.255.255.252",
         "/31": "255.255.255.254 (Point-to-Point)",
         "/32": "255.255.255.255 (Single host)",

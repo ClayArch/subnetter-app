@@ -60,7 +60,7 @@ The app will open at `http://localhost:8501`
 
 - `192.168.0.10/24`
 
-or
+   or
 
 - `192.168.0.10 255.255.255.0`
 

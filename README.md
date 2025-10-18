@@ -59,7 +59,9 @@ The app will open at `http://localhost:8501`
 ### Example
 
 - `192.168.0.10/24`
+
 or
+
 - `192.168.0.10 255.255.255.0`
 
 ## License

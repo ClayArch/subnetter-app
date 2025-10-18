@@ -15,10 +15,10 @@ st.set_page_config(page_title="Subnetter", page_icon="🌐", layout="wide")
 
 # Header
 st.title("🌐 Subnetter")
-st.caption("IPv4 subnet calculator — fast, accurate, shareable")
+st.caption("IPv4 Subnet Calculator")
 
 # Tabs for organization
-tab1, tab2 = st.tabs(["Calculator", "Reference"])
+tab1, tab2, tab3 = st.tabs(["Calculator", "Reference", "Notes"])
 
 with tab1:
     # Input section
@@ -66,7 +66,7 @@ with tab1:
                     st.metric("Wildcard Mask", info.wildcard)
                 
                 with result_col2:
-                    st.subheader("Host Range")
+                    st.subheader("Host Info")
                     st.metric("First Host", info.first_host)
                     st.metric("Last Host", info.last_host)
                     st.metric("Total Addresses", info.total_hosts)
@@ -92,10 +92,10 @@ with tab1:
                     columns=["Field", "Value"]
                 )
                 st.dataframe(
-                results_df, 
-                use_container_width=True, 
-                hide_index=True,
-                height=423
+                    results_df, 
+                    use_container_width=True, 
+                    hide_index=True,
+                    height=423
                 )
                 
                 # Download CSV
@@ -119,13 +119,15 @@ with tab2:
     st.subheader("Common Subnet Masks")
     
     common_masks = {
-        "/8": "255.0.0.0 (Class A)",
-        "/16": "255.255.0.0 (Class B)",
-        "/24": "255.255.255.0 (Class C) — Most common",
+        "/8": "255.0.0.0",
+        "/12": "255.240.0.0",
+        "/16": "255.255.0.0",
+        "/24": "255.255.255.0",
         "/25": "255.255.255.128",
         "/26": "255.255.255.192",
         "/27": "255.255.255.224",
         "/28": "255.255.255.240",
+        "/29": "255.255.255.248",
         "/30": "255.255.255.252",
         "/31": "255.255.255.254 (Point-to-Point)",
         "/32": "255.255.255.255 (Single host)",
@@ -142,4 +144,72 @@ with tab2:
     - **/32 networks** are single hosts
     - Use **/24** for most LANs (~250 hosts)
     - Use **/30** for router links (4 addresses, 2 usable)
+    """)
+
+with tab3:
+    st.subheader("Subnetting Fundamentals")
+    
+    st.markdown("""
+    ### Key Concepts
+    
+    **CIDR Notation:** `/24` represents the number of bits in the subnet mask
+    - Example: `192.168.1.0/24` means the first 24 bits identify the network
+    
+    **Subnet Bits vs Host Bits:**
+    - Total bits in IPv4: 32
+    - Subnet bits: determined by CIDR prefix
+    - Host bits: 32 - CIDR prefix
+    - Example: `/24` = 24 subnet bits, 8 host bits
+    
+    ### Subnetting Calculation Steps
+    
+    1. **Identify subnet prefix** — How many bits for the network?
+    2. **Calculate host bits** — 32 - prefix length
+    3. **Determine subnet size** — 2^(host bits)
+    4. **Calculate number of subnets** — How many can you create?
+    5. **List all subnets** — Find start and end addresses
+    
+    ### Common Private IP Ranges (Classful)
+    
+    | Class | Range | CIDR |
+    |-------|-------|------|
+    | A | 10.0.0.0 — 10.255.255.255 | /8 |
+    | B | 172.16.0.0 — 172.31.255.255 | /12 |
+    | C | 192.168.0.0 — 192.168.255.255 | /16 |
+    
+    ### Subnet Mask Reference
+    
+    | Prefix | Dotted Notation | Host Bits | Total Addresses | Usable Hosts |
+    |--------|-----------------|-----------|-----------------|--------------|
+    | /8 | 255.0.0.0 | 24 | 16,777,216 | 16,777,214 |
+    | /12 | 255.240.0.0 | 20 | 1,048,576 | 1,048,574 |
+    | /16 | 255.255.0.0 | 16 | 65,536 | 65,534 |
+    | /20 | 255.255.240.0 | 12 | 4,096 | 4,094 |
+    | /24 | 255.255.255.0 | 8 | 256 | 254 |
+    | /25 | 255.255.255.128 | 7 | 128 | 126 |
+    | /26 | 255.255.255.192 | 6 | 64 | 62 |
+    | /27 | 255.255.255.224 | 5 | 32 | 30 |
+    | /28 | 255.255.255.240 | 4 | 16 | 14 |
+    | /29 | 255.255.255.248 | 3 | 8 | 6 |
+    | /30 | 255.255.255.252 | 2 | 4 | 2 |
+    | /31 | 255.255.255.254 | 1 | 2 | 2 |
+    | /32 | 255.255.255.255 | 0 | 1 | 1 |
+    
+    ### Special Cases
+    
+    - **/31 (Point-to-Point):** Both addresses are usable (RFC 3021) — used for router links
+    - **/32 (Host):** Single IP address, typically used for loopback or specific host routes
+    - **/0 (Any):** Matches all IPv4 addresses
+    
+    ### Example Calculation
+    
+    **Given:** IP `192.168.200.139` with mask `/27`
+    
+    - Host bits: 32 - 27 = 5
+    - Total addresses: 2^5 = 32
+    - Usable hosts: 32 - 2 = 30
+    - Network address: 192.168.200.128
+    - Broadcast address: 192.168.200.159
+    - First host: 192.168.200.129
+    - Last host: 192.168.200.158
     """)

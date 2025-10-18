@@ -56,10 +56,11 @@ The app will open at `http://localhost:8501`
 4. View results across three categories: Network Info, Host Range, and Additional Info
 5. Download results as CSV if needed
 
-## Examples
+### Example
 
-- `192.168.1.0/24`
-- `192.168.1.10 255.255.255.0`
+- `192.168.0.10/24`
+or
+- `192.168.0.10 255.255.255.0`
 
 ## License
 

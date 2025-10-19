@@ -265,7 +265,7 @@ with tab4:
         st.rerun()
     
     # Column headers
-    col1, col2, col3, col4, col5 = st.columns([1.5, 0.8, 0.6, 0.6, 0.4])
+    col1, col2, col3, col4, col5 = st.columns([1.0, 0.8, 0.6, 0.6, 0.4])
     with col1:
         st.caption("Subnet Name")
     with col2:
@@ -273,14 +273,14 @@ with tab4:
     with col3:
         st.caption("CIDR")
     with col4:
-        st.caption("Total Addrs")
+        st.caption("Total Addresses")
     
     # Display requirements
     total_addrs_needed = 0
     requirement_data = []
     
     for idx, req in enumerate(st.session_state.requirements):
-        col1, col2, col3, col4, col5 = st.columns([1.5, 0.8, 0.6, 0.6, 0.4])
+        col1, col2, col3, col4, col5 = st.columns([1.0, 0.8, 0.6, 0.6, 0.4])
         
         with col1:
             st.session_state.requirements[idx]["name"] = st.text_input(
@@ -365,9 +365,9 @@ with tab4:
                 hide_index=True,
                 column_config={
                     "name": st.column_config.TextColumn("Subnet"),
-                    "hosts": st.column_config.NumberColumn("Hosts"),
-                    "prefix": st.column_config.NumberColumn("CIDR"),
-                    "total_addrs": st.column_config.NumberColumn("Total"),
-                    "usable": st.column_config.NumberColumn("Usable"),
+                    "hosts": st.column_config.NumberColumn("Hosts Needed"),
+                    "prefix": st.column_config.NumberColumn("CIDR Prefix"),
+                    "total_addrs": st.column_config.NumberColumn("Total Addresses"),
+                    "usable": st.column_config.NumberColumn("Usable Hosts"),
                 }
             )

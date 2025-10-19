@@ -176,10 +176,22 @@ with tab3:
     | /25 | .1000 0000 | 0.128 | 2 = 2^1 | 126 = 2^7 - 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
     | /26 | .1100 0000 | 0.192 | 4 = 2^2 | 62 = 2^6 - 2 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
     | /27 | .1110 0000 | 0.224 | 8 = 2^3 | 30 = 2^5 - 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
-    | /28 | .1111 0000 | 0.24 | 16 = 2^4 | 14 = 2^4 - 2 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+    | /28 | .1111 0000 | 0.240 | 16 = 2^4 | 14 = 2^4 - 2 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
     | /29 | .1111 1000 | 0.248 | 32 = 2^5 | 6 = 2^3 - 2 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 |
     | /30 | .1111 1100 | 0.252 | 64 = 2^6 | 2 = 2^2 - 2 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 |
                       
+    ### Example Calculation
+    
+    IP address `192.168.200.139` with subnet mask `/27`
+    
+    - Host bits: 32 - 27 = 5
+    - Total addresses: 2^5 = 32
+    - Usable hosts: 32 - 2 = 30
+    - Network address: 192.168.200.128
+    - Broadcast address: 192.168.200.159
+    - First host: 192.168.200.129
+    - Last host: 192.168.200.158            
+
     ### Common Private IP Ranges (Classful)
     
     | Class | Range | CIDR |
@@ -211,16 +223,4 @@ with tab3:
     - **/31 (Point-to-Point):** Both addresses are usable (RFC 3021) — used for router links
     - **/32 (Host):** Single IP address, typically used for loopback or specific host routes
     - **/0 (Any):** Matches all IPv4 addresses
-    
-    ### Example Calculation
-    
-    IP address `192.168.200.139` with subnet mask `/27`
-    
-    - Host bits: 32 - 27 = 5
-    - Total addresses: 2^5 = 32
-    - Usable hosts: 32 - 2 = 30
-    - Network address: 192.168.200.128
-    - Broadcast address: 192.168.200.159
-    - First host: 192.168.200.129
-    - Last host: 192.168.200.158
     """)

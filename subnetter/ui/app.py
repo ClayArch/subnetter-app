@@ -374,7 +374,7 @@ with tab4:
                     "name": st.column_config.TextColumn("Subnet"),
                     "hosts": st.column_config.NumberColumn("Hosts Needed"),
                     "prefix": st.column_config.TextColumn("CIDR"),
-                    "total_addrs": st.column_config.NumberColumn("Total Addrs"),
+                    "total_addrs": st.column_config.NumberColumn("Total Addresses"),
                     "usable": st.column_config.NumberColumn("Usable Hosts"),
                 }
             )

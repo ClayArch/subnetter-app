@@ -147,7 +147,7 @@ with tab2:
     """)
 
 with tab3:
-    st.subheader("Subnetting Fundamentals")
+    st.header("Subnetting Fundamentals")
     
     st.markdown("""
     ### Key Concepts
@@ -161,6 +161,8 @@ with tab3:
     - Host bits: 32 - CIDR prefix
     - Example: `/24` = 24 subnet bits, 8 host bits
     
+    ---
+                            
     ### Subnetting Calculation Steps
     
     1. **Identify subnet prefix** — How many bits for the network?
@@ -192,6 +194,8 @@ with tab3:
     - First host: 192.168.200.129
     - Last host: 192.168.200.158            
 
+    ---   
+
     ### Common Private IP Ranges (Classful)
     
     | Class | Range | CIDR |
@@ -200,6 +204,8 @@ with tab3:
     | B | 172.16.0.0 — 172.31.255.255 | /12 |
     | C | 192.168.0.0 — 192.168.255.255 | /16 |
     
+    ---
+
     ### Subnet Mask Reference
     
     | Prefix | Dotted Notation | Host Bits | Total Addresses | Usable Hosts |
@@ -218,23 +224,13 @@ with tab3:
     | /31 | 255.255.255.254 | 1 | 2 | 2 |
     | /32 | 255.255.255.255 | 0 | 1 | 1 |
     
+    ---
+
     ### Special Cases
     
     - **/31 (Point-to-Point):** Both addresses are usable (RFC 3021) — used for router links
-    - **/32 (Host):** Single IP address, typically used for loopback or specific host routes
+    - **/32 (Host):** Single IP address, typically used for loopback
     - **/0 (Any):** Matches all IPv4 addresses
-    
-    ### Example Calculation
-    
-    **Given:** IP `192.168.200.139` with mask `/27`
-    
-    - Host bits: 32 - 27 = 5
-    - Total addresses: 2^5 = 32
-    - Usable hosts: 32 - 2 = 30
-    - Network address: 192.168.200.128
-    - Broadcast address: 192.168.200.159
-    - First host: 192.168.200.129
-    - Last host: 192.168.200.158
     """)
 
 with tab4:

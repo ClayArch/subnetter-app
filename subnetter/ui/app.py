@@ -160,17 +160,17 @@ with tab1:
                     use_container_width=True
                 )
         
-                st.divider()
                 if st.session_state.subnet_info:
                     st.subheader("Visualize Subnet")
-                    st.write(f"DEBUG: subnet_info = {st.session_state.subnet_info}")
                     if st.button("📊 Generate Diagram", use_container_width=True):
-                        st.write("Button clicked!")
                         try:
-                            fig = draw_subnet_diagram(st.session_state.subnet_info)
+                            info = st.session_state.subnet_info
+                            fig, ax = plt.subplots(figsize=(10, 2))
+                            ax.text(0.5, 0.5, f"Test: {info.network}/{info.cidr}", ha='center', fontsize=20)
+                            ax.axis('off')
                             st.pyplot(fig)
                         except Exception as e:
-                            st.error(f"Diagram error: {e}")
+                            st.error(f"Error: {e}")
 
         except Exception as e:
             st.error(f"Error: {str(e)}")

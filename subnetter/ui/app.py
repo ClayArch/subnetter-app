@@ -265,7 +265,7 @@ with tab4:
         st.rerun()
     
     # Column headers
-    col1, col2, col3, col4, col5 = st.columns([1.0, 0.8, 0.6, 0.6, 0.4])
+    col1, col2, spacer, col3, col4, col5 = st.columns([1.4, 0.8, 0.1, 0.5, 0.5, 0.4])
     with col1:
         st.caption("Subnet Name")
     with col2:
@@ -280,7 +280,7 @@ with tab4:
     requirement_data = []
     
     for idx, req in enumerate(st.session_state.requirements):
-        col1, col2, col3, col4, col5 = st.columns([1.0, 0.8, 0.6, 0.6, 0.4])
+        col1, col2, spacer, col3, col4, col5 = st.columns([1.4, 0.8, 0.1, 0.5, 0.5, 0.4])
         
         with col1:
             st.session_state.requirements[idx]["name"] = st.text_input(
@@ -326,7 +326,10 @@ with tab4:
                 "total_addrs": total_addrs,
                 "usable": usable
             })
-        
+
+        with spacer:
+            st.empty()
+
         with col3:
             st.metric("", f"/{prefix}" if prefix else "—", label_visibility="collapsed")
         

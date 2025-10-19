@@ -169,6 +169,17 @@ with tab3:
     4. **Calculate number of subnets** — How many can you create?
     5. **List all subnets** — Find start and end addresses
     
+    ### Binary Representation of Subnet Masks
+                
+    | Prefix | Binary Netmask | Decimal Netmask | # of Subnets | # of Hosts | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+    |--------|---|---|---|---|---|---|---|---|---|---|---|---|
+    | /25 | .1000 0000 | 0.128 | 2 = 2^1 | 126 = 2^7 - 2 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+    | /26 | .1100 0000 | 0.192 | 4 = 2^2 | 62 = 2^6 - 2 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+    | /27 | .1110 0000 | 0.224 | 8 = 2^3 | 30 = 2^5 - 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
+    | /28 | .1111 0000 | 0.24 | 16 = 2^4 | 14 = 2^4 - 2 | 1 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+    | /29 | .1111 1000 | 0.248 | 32 = 2^5 | 6 = 2^3 - 2 | 1 | 1 | 1 | 1 | 1 | 0 | 0 | 0 |
+    | /30 | .1111 1100 | 0.252 | 64 = 2^6 | 2 = 2^2 - 2 | 1 | 1 | 1 | 1 | 1 | 1 | 0 | 0 |
+                      
     ### Common Private IP Ranges (Classful)
     
     | Class | Range | CIDR |
@@ -203,7 +214,7 @@ with tab3:
     
     ### Example Calculation
     
-    **Given:** IP `192.168.200.139` with mask `/27`
+    IP address `192.168.200.139` with subnet mask `/27`
     
     - Host bits: 32 - 27 = 5
     - Total addresses: 2^5 = 32

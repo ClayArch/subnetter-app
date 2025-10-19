@@ -130,7 +130,7 @@ with tab2:
         "/29": "255.255.255.248",
         "/30": "255.255.255.252",
         "/31": "255.255.255.254 (Point-to-Point)",
-        "/32": "255.255.255.255 (Single host)",
+        "/32": "255.255.255.255 (Single Host)",
     }
     
     mask_text = "\n".join([f"{cidr:5} → {mask}" for cidr, mask in common_masks.items()])

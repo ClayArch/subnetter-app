@@ -27,37 +27,39 @@ def draw_subnet_diagram(info):
     total = info.total_hosts
     usable = info.usable_hosts
     
-    fig, ax = plt.subplots(figsize=(12, 4))
+    fig, ax = plt.subplots(figsize=(12, 3))
+    
+    # Calculate proportions
+    network_width = 1 / total
+    broadcast_width = 1 / total
+    usable_width = (total - 2) / total if total > 2 else 0
     
     # Network address block (red)
-    ax.barh(0, 1, left=0, height=0.6, color='#ff6b6b', edgecolor='black', linewidth=2)
-    ax.text(0.5, 0, 'Network', ha='center', va='center', fontweight='bold', fontsize=9)
+    ax.barh(0, network_width, left=0, height=0.5, color='#ff6b6b', edgecolor='black', linewidth=2)
     
     # Usable hosts block (green)
-    usable_width = (total - 2) / total if total > 2 else 0
-    ax.barh(0, usable_width, left=1/total, height=0.6, color='#51cf66', edgecolor='black', linewidth=2)
-    ax.text(0.5, 0, f'Usable Hosts ({usable})', ha='center', va='center', fontweight='bold', fontsize=10, color='white')
+    ax.barh(0, usable_width, left=network_width, height=0.5, color='#51cf66', edgecolor='black', linewidth=2)
     
     # Broadcast address block (red)
-    ax.barh(0, 1/total, left=1 - 1/total, height=0.6, color='#ff6b6b', edgecolor='black', linewidth=2)
-    ax.text(1 - 0.5/total, 0, 'Broadcast', ha='center', va='center', fontweight='bold', fontsize=8)
+    ax.barh(0, broadcast_width, left=network_width + usable_width, height=0.5, color='#ff6b6b', edgecolor='black', linewidth=2)
     
-    # Labels
-    ax.text(0, -0.4, info.network, ha='center', fontsize=9, fontweight='bold')
-    ax.text(1, -0.4, info.broadcast, ha='center', fontsize=9, fontweight='bold')
+    # Add labels at the bottom
+    ax.text(0, -0.35, info.network, ha='center', fontsize=10, fontweight='bold')
+    ax.text(0.5, 0.15, f'Usable Hosts\n({usable})', ha='center', va='center', fontweight='bold', fontsize=11, color='white')
+    ax.text(1, -0.35, info.broadcast, ha='center', fontsize=10, fontweight='bold')
     
     # Formatting
-    ax.set_xlim(-0.05, 1.05)
-    ax.set_ylim(-0.8, 1)
+    ax.set_xlim(-0.1, 1.1)
+    ax.set_ylim(-0.6, 0.5)
     ax.axis('off')
     
     # Title
-    fig.suptitle(f'{info.network}/{info.cidr} — {total} Total Addresses', fontsize=14, fontweight='bold')
+    fig.suptitle(f'{info.network}/{info.cidr} — {total} Total Addresses', fontsize=14, fontweight='bold', y=0.98)
     
     # Legend
     red_patch = mpatches.Patch(color='#ff6b6b', label='Reserved (Network & Broadcast)')
     green_patch = mpatches.Patch(color='#51cf66', label='Usable Host Addresses')
-    ax.legend(handles=[red_patch, green_patch], loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
+    ax.legend(handles=[red_patch, green_patch], loc='upper center', bbox_to_anchor=(0.5, -0.1), ncol=2, frameon=True)
     
     plt.tight_layout()
     return fig

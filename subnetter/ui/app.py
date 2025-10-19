@@ -119,7 +119,7 @@ with tab2:
     st.subheader("Common Subnet Masks")
     
     common_masks = {
-        "/8" : "255.0.0.0",
+        "/8": "255.0.0.0",
         "/12": "255.240.0.0",
         "/16": "255.255.0.0",
         "/24": "255.255.255.0",
@@ -133,8 +133,8 @@ with tab2:
         "/32": "255.255.255.255 (Single host)",
     }
     
-    for cidr, mask in common_masks.items():
-        st.text(f"{cidr:5} → {mask}")
+    mask_text = "\n".join([f"{cidr:5} → {mask}" for cidr, mask in common_masks.items()])
+    st.code(mask_text, language=None)
     
     st.divider()
     st.subheader("Quick Tips")

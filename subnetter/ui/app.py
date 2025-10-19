@@ -140,10 +140,9 @@ with tab2:
     st.subheader("Quick Tips")
     st.markdown("""
     - **Usable hosts** = Total addresses - 2 (network & broadcast)
-    - **/31 networks** have 2 usable addresses (point-to-point)
     - **/32 networks** are single hosts
     - Use **/24** for most LANs (~250 hosts)
-    - Use **/30** for router links (4 addresses, 2 usable)
+    - Use **/31** for router links (point-to-point)
     """)
 
 with tab3:

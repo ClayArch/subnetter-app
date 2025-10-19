@@ -5,6 +5,8 @@ from dataclasses import asdict
 
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -16,6 +18,46 @@ st.set_page_config(page_title="Subnetter", page_icon="🌐", layout="wide")
 # Header
 st.title("🌐 Subnetter")
 st.caption("IPv4 Subnet Calculator")
+
+def draw_subnet_diagram(info):
+    """Create a visual representation of subnet address space"""
+    total = info.total_hosts
+    usable = info.usable_hosts
+    
+    fig, ax = plt.subplots(figsize=(12, 4))
+    
+    # Network address block (red)
+    ax.barh(0, 1, left=0, height=0.6, color='#ff6b6b', edgecolor='black', linewidth=2)
+    ax.text(0.5, 0, 'Network', ha='center', va='center', fontweight='bold', fontsize=9)
+    
+    # Usable hosts block (green)
+    usable_width = (total - 2) / total if total > 2 else 0
+    ax.barh(0, usable_width, left=1/total, height=0.6, color='#51cf66', edgecolor='black', linewidth=2)
+    ax.text(0.5, 0, f'Usable Hosts ({usable})', ha='center', va='center', fontweight='bold', fontsize=10, color='white')
+    
+    # Broadcast address block (red)
+    ax.barh(0, 1/total, left=1 - 1/total, height=0.6, color='#ff6b6b', edgecolor='black', linewidth=2)
+    ax.text(1 - 0.5/total, 0, 'Broadcast', ha='center', va='center', fontweight='bold', fontsize=8)
+    
+    # Labels
+    ax.text(0, -0.4, info.network, ha='center', fontsize=9, fontweight='bold')
+    ax.text(1, -0.4, info.broadcast, ha='center', fontsize=9, fontweight='bold')
+    
+    # Formatting
+    ax.set_xlim(-0.05, 1.05)
+    ax.set_ylim(-0.8, 1)
+    ax.axis('off')
+    
+    # Title
+    fig.suptitle(f'{info.network}/{info.cidr} — {total} Total Addresses', fontsize=14, fontweight='bold')
+    
+    # Legend
+    red_patch = mpatches.Patch(color='#ff6b6b', label='Reserved (Network & Broadcast)')
+    green_patch = mpatches.Patch(color='#51cf66', label='Usable Host Addresses')
+    ax.legend(handles=[red_patch, green_patch], loc='upper center', bbox_to_anchor=(0.5, -0.15), ncol=2)
+    
+    plt.tight_layout()
+    return fig
 
 # Tabs for organization
 tab1, tab2, tab3 = st.tabs(["Calculator", "Reference", "Notes"])
@@ -112,6 +154,11 @@ with tab1:
                     use_container_width=True
                 )
         
+                st.divider()
+                if st.button("📊 Visualize Subnet", use_container_width=True):
+                    fig = draw_subnet_diagram(info)
+                    st.pyplot(fig)
+
         except Exception as e:
             st.error(f"Error: {str(e)}")
 

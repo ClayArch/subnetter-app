@@ -18,7 +18,7 @@ st.title("🌐 Subnetter")
 st.caption("IPv4 Subnet Calculator")
 
 # Tabs for organization
-tab1, tab2, tab3 = st.tabs(["Calculator", "Reference", "Notes"])
+tab1, tab2, tab3, tab4 = st.tabs(["Calculator", "Reference", "Notes", "Planner"])
 
 with tab1:
     # Input section
@@ -223,4 +223,177 @@ with tab3:
     - **/31 (Point-to-Point):** Both addresses are usable (RFC 3021) — used for router links
     - **/32 (Host):** Single IP address, typically used for loopback or specific host routes
     - **/0 (Any):** Matches all IPv4 addresses
+    
+    ### Example Calculation
+    
+    **Given:** IP `192.168.200.139` with mask `/27`
+    
+    - Host bits: 32 - 27 = 5
+    - Total addresses: 2^5 = 32
+    - Usable hosts: 32 - 2 = 30
+    - Network address: 192.168.200.128
+    - Broadcast address: 192.168.200.159
+    - First host: 192.168.200.129
+    - Last host: 192.168.200.158
     """)
+
+with tab4:
+    st.subheader("Subnet Planner")
+    st.caption("Plan subnets based on host requirements")
+    
+    # Parent network input
+    parent_net = st.text_input(
+        "Parent Network",
+        value="192.168.1.0/24",
+        placeholder="192.168.1.0/24",
+        help="Enter in CIDR notation"
+    )
+    
+    # Parse parent network
+    parent_prefix = parent_host_bits = parent_total_addrs = 0
+    parent_valid = False
+
+    try:
+        parent_parts = parent_net.strip().split("/")
+        if len(parent_parts) != 2:
+            raise ValueError("Invalid format - use CIDR notation")
+        parent_prefix = int(parent_parts[1])
+        if not (0 <= parent_prefix <= 32):
+            raise ValueError("CIDR must be 0-32")
+        parent_host_bits = 32 - parent_prefix
+        parent_total_addrs = 1 << parent_host_bits
+        parent_valid = True
+    except ValueError as e:
+        st.error(f"❌ {str(e)}")
+    
+    if parent_valid:
+        st.info(f"📊 Available: **{parent_total_addrs}** addresses ({parent_prefix} → {parent_host_bits} host bits)")
+    
+    st.divider()
+    st.subheader("Requirements")
+    
+    # Initialize session state
+    if "requirements" not in st.session_state:
+        st.session_state.requirements = [
+            {"name": "Subnet A", "hosts": 58},
+            {"name": "Subnet B", "hosts": 28},
+            {"name": "Subnet C", "hosts": 12},
+        ]
+    
+    if st.button("➕ Add Requirement", use_container_width=True):
+        new_idx = len(st.session_state.requirements)
+        st.session_state.requirements.append(
+            {"name": f"Subnet {chr(65 + new_idx)}", "hosts": 0}
+        )
+        st.rerun()
+    
+    # Column headers
+    col1, col2, spacer, col3, col4, col5 = st.columns([1.3, 0.8, 0.1, 0.5, 0.5, 0.4])
+    with col1:
+        st.caption("Subnet Name")
+    with col2:
+        st.caption("Hosts Needed")
+    with col3:
+        st.caption("CIDR")
+    with col4:
+        st.caption("Total Addresses")
+    
+    # Display requirements
+    total_addrs_needed = 0
+    requirement_data = []
+    
+    for idx, req in enumerate(st.session_state.requirements):
+        col1, col2, spacer, col3, col4, col5 = st.columns([1.3, 0.8, 0.1, 0.5, 0.5, 0.4])
+        
+        with col1:
+            st.session_state.requirements[idx]["name"] = st.text_input(
+                "Name",
+                value=req["name"],
+                key=f"name_{idx}",
+                label_visibility="collapsed"
+            )
+        
+        with col2:
+            st.session_state.requirements[idx]["hosts"] = st.number_input(
+                "Hosts",
+                value=req["hosts"],
+                min_value=0,
+                key=f"hosts_{idx}",
+                label_visibility="collapsed"
+            )
+        
+        # Calculate subnet size
+        hosts = st.session_state.requirements[idx]["hosts"]
+        prefix = total_addrs = usable = 0
+        
+        if hosts == 0:
+            pass
+        elif hosts == 1:
+            prefix, total_addrs, usable = 32, 1, 1
+        elif hosts == 2:
+            prefix, total_addrs, usable = 31, 2, 2
+        else:
+            host_bits = 1
+            while (1 << host_bits) - 2 < hosts:
+                host_bits += 1
+            prefix = 32 - host_bits
+            total_addrs = 1 << host_bits
+            usable = total_addrs - 2
+        
+        if total_addrs > 0:
+            total_addrs_needed += total_addrs
+            requirement_data.append({
+                "name": st.session_state.requirements[idx]["name"],
+                "hosts": hosts,
+                "prefix": prefix,
+                "total_addrs": total_addrs,
+                "usable": usable
+            })
+
+        with spacer:
+            st.empty()
+
+        with col3:
+            st.metric("", f"/{prefix}" if prefix else "—", label_visibility="collapsed")
+        
+        with col4:
+            st.metric("", total_addrs if total_addrs else "—", label_visibility="collapsed")
+        
+        with col5:
+            if st.button("🗑️", key=f"del_{idx}", use_container_width=True):
+                st.session_state.requirements.pop(idx)
+                st.rerun()
+    
+    st.divider()
+    
+    # Validation and results
+    if parent_valid:
+        is_valid = total_addrs_needed > 0 and total_addrs_needed <= parent_total_addrs
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Total Needed", total_addrs_needed)
+        with col2:
+            st.metric("Available", parent_total_addrs)
+        
+        if is_valid:
+            st.success(f"✓ Valid! ({total_addrs_needed}/{parent_total_addrs} used)")
+        else:
+            st.error(f"✗ Insufficient ({total_addrs_needed} needed, {parent_total_addrs} available)")
+        
+        # Display results
+        if requirement_data:
+            st.subheader("Subnet Plan")
+            results_df = pd.DataFrame(requirement_data)
+            st.dataframe(
+                results_df,
+                use_container_width=True,
+                hide_index=True,
+                column_config={
+                    "name": st.column_config.TextColumn("Subnet"),
+                    "hosts": st.column_config.NumberColumn("Hosts Needed"),
+                    "prefix": st.column_config.NumberColumn("CIDR Prefix"),
+                    "total_addrs": st.column_config.NumberColumn("Total Addresses"),
+                    "usable": st.column_config.NumberColumn("Usable Hosts"),
+                }
+            )

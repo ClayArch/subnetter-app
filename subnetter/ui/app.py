@@ -15,6 +15,9 @@ from subnetter.core.calculator import parse_ip_and_mask, compute_subnet
 
 st.set_page_config(page_title="Subnetter", page_icon="🌐", layout="wide")
 
+if "subnet_info" not in st.session_state:
+    st.session_state.subnet_info = None
+
 # Header
 st.title("🌐 Subnetter")
 st.caption("IPv4 Subnet Calculator")
@@ -92,7 +95,8 @@ with tab1:
                 st.error("Please enter an IP address.")
             else:
                 ip, prefix = parse_ip_and_mask(ip_in, mask_in if show_mask and mask_in else None)
-                info = compute_subnet(ip, prefix)
+                st.session_state.subnet_info = compute_subnet(ip, prefix)
+                info = st.session_state.subnet_info
                 
                 # Success indicator
                 st.success("✓ Subnet calculated successfully")
@@ -154,9 +158,8 @@ with tab1:
                     use_container_width=True
                 )
         
-                st.divider()
-                if st.button("📊 Visualize Subnet", use_container_width=True):
-                    fig = draw_subnet_diagram(info)
+                if st.session_state.subnet_info and st.button("📊 Visualize Subnet", use_container_width=True):
+                    fig = draw_subnet_diagram(st.session_state.subnet_info)
                     st.pyplot(fig)
 
         except Exception as e:

@@ -241,7 +241,7 @@ with tab4:
         "Parent Network",
         value="192.168.1.0/24",
         placeholder="192.168.1.0/24",
-        help="Enter in CIDR notation"
+        help="Enter the network IP in CIDR notation"
     )
     
     # Parse parent network

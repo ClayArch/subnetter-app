@@ -1,3 +1,5 @@
+# My ignore file for virtual environments, build artifacts, Python cache files, IDE configs, and OS-specific files
+
 # Virtual environment
 .venv/
 venv/

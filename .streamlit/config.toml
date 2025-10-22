@@ -5,7 +5,7 @@ showErrorDetails = true
 level = "info"
 
 [theme]
-primaryColor = "#e74824ff"
+primaryColor = "#e87960ff"
 backgroundColor = "#0e1117"
 secondaryBackgroundColor = "#262730"
 textColor = "#fafafa"
